@@ -3,26 +3,20 @@ const app = express()
 const {bots, playerRecord} = require('./data')
 const {shuffleArray} = require('./utils')
 const path = require('path')
-
+const Rollbar = require('rollbar')
 
 app.use(express.json())
 app.use(express.static('public'))
 
+var rollbar = new Rollbar({
+  accessToken: 'f1eb49e811e44e8a8cf7251b7a99d53b',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+})
 
 app.get('/', (req,res) => {
     res.status(200).sendFile(path.join(__dirname, '../assessment-qaops/public/index.html'))
   })
-
-
-  app.get('/', (req,res) => {
-    res.status(200).sendFile(path.join(__dirname, '../assessment-qaops/public/styles.css'))
-})
-
-app.get('/', (req,res) => {
-    res.status(200).sendFile(path.join(__dirname, '../assessment-qaops/public/main.js'))
-})
-
-
 
 app.get('/api/robots', (req, res) => {
     try {
@@ -84,6 +78,12 @@ app.get('/api/player', (req, res) => {
         res.sendStatus(400)
     }
 })
+
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
+
+
 
 app.listen(4000, () => {
   console.log(`Listening on 4000`)
