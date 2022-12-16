@@ -6,6 +6,7 @@ const path = require('path')
 
 
 app.use(express.json())
+app.use(express.static('public'))
 
 
 app.get('/', (req,res) => {
@@ -13,9 +14,14 @@ app.get('/', (req,res) => {
   })
 
 
-  app.get('/css', (req,res) => {
+  app.get('/', (req,res) => {
     res.status(200).sendFile(path.join(__dirname, '../assessment-qaops/public/styles.css'))
 })
+
+app.get('/', (req,res) => {
+    res.status(200).sendFile(path.join(__dirname, '../assessment-qaops/public/main.js'))
+})
+
 
 
 app.get('/api/robots', (req, res) => {
